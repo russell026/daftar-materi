@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Daftar Materi - Selamat Datang</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <title>Daftar Quiz - Selamat Datang</title>
   <style>
     /* Reset & base */
     *, *::before, *::after {
@@ -14,140 +12,106 @@
 
     body {
       margin: 0;
-      font-family: 'Inter', sans-serif;
+      font-family: Arial, sans-serif;
       background: #ffffff;
-      color: #374151; /* cool gray 700 */
+      color: #333;
       line-height: 1.6;
       min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
 
     /* Container */
     .container {
       max-width: 720px;
-      margin-left: auto;
-      margin-right: auto;
+      margin: 0 auto;
       padding: 32px 24px;
       display: flex;
       flex-direction: column;
       gap: 32px;
-      min-height: 100vh;
     }
 
     header h1 {
-      font-size: 2.75rem; /* ~44px */
-      font-weight: 700;
-      color: #111827; /* gray 900 */
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    header h1 .material-icons {
-      font-size: 2.6rem;
-      color: #0ea5e9; /* bright blue */
-      user-select: none;
+      font-size: 2.5rem; /* ~40px */
+      color: #f59e0b; /* yellow-500 */
+      text-align: center;
     }
 
     section {
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 16px;
     }
 
     section > h2 {
       font-size: 1.75rem; /* ~28px */
-      font-weight: 600;
-      color: #111827;
-      border-bottom: 3px solid #0ea5e9;
-      padding-bottom: 6px;
-      max-width: max-content;
+      color: #333;
+      text-align: center;
+      border-bottom: 2px solid #f59e0b; /* yellow-500 */
+      padding-bottom: 8px;
     }
 
-    /* Material list */
-    .materi-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
     }
 
-    .materi-item {
-      background: #f9fafb; /* light gray background */
-      border-radius: 12px;
-      padding: 16px 24px;
-      box-shadow: 0 2px 6px rgba(14, 165, 233, 0.15);
-      transition: box-shadow 0.3s ease;
-      cursor: default;
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border: 1px solid #e5e7eb; /* gray-300 */
     }
 
-    .materi-item:hover, .materi-item:focus-within {
-      box-shadow: 0 6px 12px rgba(14, 165, 233, 0.3);
-    }
-
-    .materi-title {
-      font-size: 1.125rem; /* 18px */
-      font-weight: 600;
-      color: #111827;
-      margin-bottom: 4px;
-    }
-
-    .materi-date {
-      font-size: 0.875rem; /*14px*/
-      color: #6b7280; /* gray 500 */
-      font-style: italic;
-    }
-
-    /* Button */
-    .btn-buat {
-      align-self: flex-start;
-      background-color: #0ea5e9;
+    th {
+      background-color: #f59e0b; /* yellow-500 */
       color: white;
-      font-weight: 700;
-      font-size: 1.125rem;
-      padding: 14px 36px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9fafb; /* light gray */
+    }
+
+    /* Buttons */
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 24px;
+    }
+
+    .btn {
+      background-color: #f59e0b; /* yellow-500 */
+      color: white;
+      font-weight: bold;
+      padding: 12px 20px;
       border: none;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(14, 165, 233, 0.5);
+      border-radius: 8px;
       cursor: pointer;
-      transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-      user-select: none;
+      transition: background-color 0.3s ease;
+      flex: 1;
+      margin: 0 8px; /* spacing between buttons */
       text-align: center;
     }
 
-    .btn-buat:hover,
-    .btn-buat:focus-visible {
-      background-color: #0284c7; /* darker blue */
-      box-shadow: 0 8px 20px rgba(2, 132, 199, 0.6);
-      outline: none;
-      transform: translateY(-2px);
+    .btn:hover {
+      background-color: #d97706; /* darker yellow */
     }
 
-    .btn-buat:active {
-      transform: translateY(0);
-      box-shadow: 0 3px 10px rgba(14, 165, 233, 0.4);
-    }
-
-    /* Responsive typography */
+    /* Responsive */
     @media (max-width: 480px) {
       header h1 {
-        font-size: 2rem;
+        font-size: 2rem; /* ~32px */
       }
 
       section > h2 {
-        font-size: 1.5rem;
+        font-size: 1.5rem; /* ~24px */
       }
 
-      .materi-title {
-        font-size: 1rem;
+      th, td {
+        padding: 8px; /* smaller padding on mobile */
       }
 
-      .btn-buat {
-        font-size: 1rem;
-        padding: 12px 28px;
+      .btn {
+        padding: 10px 16px; /* smaller button padding on mobile */
       }
     }
   </style>
@@ -155,32 +119,41 @@
 <body>
   <div class="container" role="main">
     <header>
-      <h1>
-        Selamat datang, nci Virgin
-        <span class="material-icons" aria-label="Hello wave hand icon" role="img">wave_hand</span>
-      </h1>
+      <h1>Selamat datang, nci Virgin 👋</h1>
     </header>
 
-    <section aria-labelledby="materi-title">
-      <h2 id="materi-title">Daftar Materi</h2>
-      <ul class="materi-list" role="list">
-        <li class="materi-item" tabindex="0">
-          <div class="materi-title">Bahasa Indonesia - Pengenalan Cerita</div>
-          <div class="materi-date">Dipublikasikan 5 hari lalu</div>
-        </li>
-        <li class="materi-item" tabindex="0">
-          <div class="materi-title">Matematika - Operasi Penjumlahan</div>
-          <div class="materi-date">Dipublikasikan 3 hari lalu</div>
-        </li>
-        <li class="materi-item" tabindex="0">
-          <div class="materi-title">IPA - Sistem Pencernaan</div>
-          <div class="materi-date">Dipublikasikan seminggu lalu</div>
-        </li>
-      </ul>
+    <section aria-labelledby="quiz-title">
+      <h2 id="quiz-title">Daftar Quiz</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Nomor Soal</th>
+            <th>Soal Quiz</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Apa itu bahasa Indonesia?</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Berapa hasil 5 + 7?</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Apa nama ibu kota Indonesia?</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
-    <button type="button" class="btn-buat" aria-label="Buat Materi">Buat Materi</button>
+    <div class="button-container">
+      <button class="btn" aria-label="Buat Quiz">Buat Quiz</button>
+      <button class="btn" aria-label="Lihat Hasil Quiz">Lihat Hasil Quiz</button>
+    </div>
   </div>
 </body>
 </html>
+
 
