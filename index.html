@@ -3,368 +3,435 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Buat Materi</title>
+<title>Edit Soal</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 <style>
   /* Reset and base */
-  * {
+  *, *::before, *::after {
     box-sizing: border-box;
   }
   body {
-    margin: 0;
     font-family: 'Inter', sans-serif;
-    background: #f9fafb;
-    color: #212121;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-  a {
-    color: inherit;
-    text-decoration: none;
+    margin: 0; 
+    background: #f7f9fc;
+    color: #222;
+    line-height: 1.5;
   }
 
-  /* Container & layout */
-  main {
-    flex: 1 0 auto;
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 24px 16px 64px;
-  }
-
-  /* Header */
-  header {
-    background: #3f51b5;
+  /* Layout system: mobile first */
+  header, footer {
+    background: #3f51b5; /* Material Indigo */
     color: white;
-    padding: 16px 24px;
-    text-align: center;
-    font-weight: 600;
-    font-size: 1.5rem;
+    padding: 12px 16px;
     position: sticky;
     top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
-  /* Form styles */
-  form {
-    background: white;
-    border-radius: 12px;
+  header .logo {
+    font-weight: 600;
+    font-size: 1.25rem;
+  }
+
+  /* Hamburger toggle button */
+  .mobile-menu-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+
+  nav.mobile-menu {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: 250px;
+    background: #303f9f;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    padding: 64px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    z-index: 1100;
+  }
+  nav.mobile-menu.show {
+    transform: translateX(0);
+  }
+
+  nav.mobile-menu a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 12px 16px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+  nav.mobile-menu a:hover, nav.mobile-menu a:focus {
+    background-color: #5c6bc0;
+    outline: none;
+  }
+
+  /* Overlay behind mobile menu */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1050;
+  }
+  .overlay.show {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  /* Breadcrumb */
+  .breadcrumb {
+    display: none;
+    font-size: 0.875rem;
+    color: #c5cae9;
+  }
+  .breadcrumb span {
+    margin-right: 0.5rem;
+  }
+  .breadcrumb span::after {
+    content: "›";
+    margin-left: 0.5rem;
+    color: #9fa8da;
+  }
+  .breadcrumb span:last-child::after {
+    content: "";
+  }
+
+  /* Main content */
+  main {
+    max-width: 600px;
+    margin: 32px auto;
+    background: #fff;
     padding: 24px;
-    box-shadow: 0 8px 20px rgb(0 0 0 / 0.07);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(63,81,181,0.15);
+  }
+
+  h1.page-title {
+    margin-bottom: 24px;
+    font-weight: 700;
+    font-size: 1.75rem;
+    color: #303f9f;
+    text-align: center;
+  }
+
+  form .form-group {
+    margin-bottom: 20px;
   }
   label {
     display: block;
     font-weight: 600;
-    margin-bottom: 6px;
-    font-size: 1rem;
+    margin-bottom: 8px;
+    color: #3f51b5;
   }
-  input[type="text"],
-  input[type="file"],
-  textarea {
+
+  textarea#question-text {
     width: 100%;
-    padding: 12px 14px;
-    border: 1.8px solid #ccc;
-    border-radius: 8px;
+    min-height: 110px;
+    padding: 12px 44px 12px 12px;
     font-size: 1rem;
+    border: 2px solid #9fa8da;
+    border-radius: 8px;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+    position: relative;
+    font-family: inherit;
+  }
+  textarea#question-text:focus {
+    border-color: #303f9f;
+    outline: none;
+  }
+
+  /* Voice icon inside textarea - position absolute requires relative wrapper */
+  .textarea-wrapper {
+    position: relative;
+  }
+  .voice-icon {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    font-size: 28px;
+    color: #3f51b5;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.3s ease;
+  }
+  .voice-icon:hover, .voice-icon:focus {
+    color: #1a237e;
+    outline: none;
+  }
+
+  /* Button for start voice */
+  #voice-button {
+    background: #e8eaf6;
+    border: 2px solid #9fa8da;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    color: #3f51b5;
+    cursor: pointer;
+    user-select: none;
+    width: fit-content;
+    margin-bottom: 24px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  #voice-button:hover, #voice-button:focus {
+    background-color: #c5cae9;
+    outline: none;
+  }
+
+  input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 1rem;
+    border: 2px solid #9fa8da;
+    border-radius: 8px;
     transition: border-color 0.3s ease;
     font-family: inherit;
   }
-  input[type="text"]:focus,
-  input[type="file"]:focus,
-  textarea:focus {
+  input[type="text"]:focus, input[type="number"]:focus {
+    border-color: #303f9f;
     outline: none;
-    border-color: #3f51b5;
-    box-shadow: 0 0 6px #3f51b5aa;
   }
 
-  textarea {
-    resize: vertical;
-    min-height: 80px;
-  }
-
-  /* Rekam Suara container */
-  .record-container {
+  /* Inline groups for answer and time */
+  .inline-groups {
     display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 8px;
+    gap: 24px;
+    flex-wrap: wrap;
   }
-  button.record-btn {
-    background-color: #e91e63;
-    border: none;
-    color: white;
-    padding: 10px 14px;
-    border-radius: 8px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    font-weight: 600;
-    gap: 6px;
-    transition: background-color 0.3s ease;
-  }
-  button.record-btn:hover {
-    background-color: #c2185b;
-  }
-  button.record-btn:disabled {
-    background-color: #bbb;
-    cursor: not-allowed;
-  }
-  .record-progress {
-    flex: 1 1 auto;
-    height: 8px;
-    background: #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    position: relative;
-  }
-  .record-progress > div {
-    height: 100%;
-    background: #3f51b5;
-    width: 0%;
-    transition: width 0.2s ease;
-  }
-  .record-repeat {
-    background: #ff9800;
-    border: none;
-    border-radius: 8px;
-    padding: 8px 14px;
-    font-weight: 600;
-    color: white;
-    cursor: pointer;
-    user-select: none;
-    transition: background-color 0.3s ease;
-  }
-  .record-repeat:hover {
-    background-color: #fb8c00;
-  }
-
-  /* Upload suara */
-  .upload-suara {
-    margin-top: 24px;
-    font-weight: 600;
-  }
-  input[type="file"] {
-    cursor: pointer;
+  .inline-groups .form-group {
+    flex: 1 1 45%;
+    min-width: 140px;
   }
 
   /* Buttons container */
-  .form-buttons {
+  .buttons {
     display: flex;
     justify-content: space-between;
+    gap: 16px;
     margin-top: 32px;
   }
-  button[type="reset"],
-  button[type="submit"] {
-    padding: 12px 32px;
+  button {
+    background-color: #3f51b5;
+    border: none;
+    color: white;
     font-weight: 700;
     font-size: 1rem;
+    padding: 12px 24px;
     border-radius: 12px;
-    border: none;
     cursor: pointer;
-    min-width: 100px;
-  }
-  button[type="reset"] {
-    background: #b0bec5;
-    color: #212121;
     transition: background-color 0.3s ease;
+    flex: 1 1 45%;
   }
-  button[type="reset"]:hover {
-    background: #90a4ae;
+  button:hover, button:focus {
+    background-color: #283593;
+    outline: none;
   }
-  button[type="submit"] {
-    background: #3f51b5;
-    color: white;
-    transition: background-color 0.3s ease;
+  button.cancel {
+    background-color: #c62828;
   }
-  button[type="submit"]:hover {
-    background: #303f9f;
+  button.cancel:hover, button.cancel:focus {
+    background-color: #b71c1c;
   }
 
-  /* Responsive adjustments */
+  /* Responsive */
 
-  @media (max-width: 767px) {
+  /* Show breadcrumb and hide hamburger on tablet and above */
+  @media (min-width: 768px) {
+    .breadcrumb {
+      display: block;
+      margin-left: 16px;
+    }
+    .mobile-menu-button {
+      display: none;
+    }
+    nav.mobile-menu {
+      display: none !important;
+    }
+
     main {
-      padding: 16px 12px 48px;
-    }
-    .form-buttons {
-      flex-direction: column;
-      gap: 16px;
-    }
-    button[type="reset"],
-    button[type="submit"] {
-      min-width: auto;
-      width: 100%;
+      margin: 48px auto;
     }
   }
+
 </style>
 </head>
 <body>
-<header>
-  Buat Materi
-</header>
-<main>
-  <form id="materiForm" novalidate>
-    <label for="mapel">Mapel</label>
-    <input type="text" id="mapel" name="mapel" placeholder="Nama mapel..." required autocomplete="off" aria-describedby="mapel-desc" />
-    <label for="judul">Judul Materi</label>
-    <input type="text" id="judul" name="judul" placeholder="Judul materi..." required autocomplete="off" aria-describedby="judul-desc" />
 
-    <label>Rekam Suara</label>
-    <div class="record-container" aria-live="polite" aria-atomic="true">
-      <button type="button" class="record-btn" id="recordBtn" aria-pressed="false" aria-label="Mulai rekam suara">
-        <span class="material-icons" aria-hidden="true">mic</span> Mulai
-      </button>
-      <div class="record-progress" aria-label="Progress rekaman">
-        <div id="progressBar"></div>
-      </div>
-      <button type="button" class="record-repeat" id="repeatBtn" disabled>Ulang</button>
+<header>
+  <button class="mobile-menu-button" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu">
+    <span class="material-icons">menu</span>
+  </button>
+  <div class="logo">Edit Soal</div>
+  <div class="breadcrumb" aria-label="Breadcrumb navigation">
+    <span>Home</span><span>Edit Soal</span>
+  </div>
+</header>
+
+<nav id="mobileMenu" class="mobile-menu" aria-label="Mobile navigation">
+  <a href="#" tabindex="0">Beranda</a>
+  <a href="#" tabindex="0">Soal</a>
+  <a href="#" tabindex="0">Pengaturan</a>
+</nav>
+<div class="overlay"></div>
+
+<main>
+  <h1 class="page-title">Edit Soal</h1>
+  <form id="editSoalForm" novalidate>
+    <div class="form-group textarea-wrapper">
+      <label for="question-text">Masukkan teks</label>
+      <textarea id="question-text" name="questionText" aria-describedby="voiceHelp" placeholder="Masukkan teks soal..."></textarea>
+      <span class="material-icons voice-icon" role="button" tabindex="0" aria-label="Mulai gunakan suara" title="Mulai gunakan suara">volume_up</span>
     </div>
 
-    <label for="uploadSuara" class="upload-suara">Upload Suara</label>
-    <input type="file" id="uploadSuara" name="uploadSuara" accept="audio/*" aria-describedby="upload-desc" />
+    <button type="button" id="voice-button" aria-pressed="false">gunakan suara</button>
 
-    <div class="form-buttons">
-      <button type="reset" id="btnCancel">Batal</button>
-      <button type="submit" id="btnSubmit">Kirim</button>
+    <div class="form-group">
+      <label for="choice-a">Pilihan A:</label>
+      <input type="text" id="choice-a" name="choiceA" placeholder="Pilihan A" autocomplete="off" />
+    </div>
+
+    <div class="form-group">
+      <label for="choice-b">Pilihan B:</label>
+      <input type="text" id="choice-b" name="choiceB" placeholder="Pilihan B" autocomplete="off" />
+    </div>
+
+    <div class="form-group">
+      <label for="choice-c">Pilihan C:</label>
+      <input type="text" id="choice-c" name="choiceC" placeholder="Pilihan C" autocomplete="off" />
+    </div>
+
+    <div class="inline-groups">
+      <div class="form-group">
+        <label for="correct-answer">Jawaban benar:</label>
+        <input type="text" id="correct-answer" name="correctAnswer" maxlength="1" placeholder="A/B/C" autocomplete="off" pattern="[ABCabc]" />
+      </div>
+
+      <div class="form-group">
+        <label for="time-limit">Waktu (Menit):</label>
+        <input type="number" id="time-limit" name="timeLimit" min="1" max="60" placeholder="..." autocomplete="off" />
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button type="reset" class="cancel" aria-label="Batal">Batal</button>
+      <button type="submit" aria-label="Selesai">Selesai</button>
     </div>
   </form>
 </main>
-<script>
-  (function() {
-    const recordBtn = document.getElementById('recordBtn');
-    const repeatBtn = document.getElementById('repeatBtn');
-    const progressBar = document.getElementById('progressBar');
-    const form = document.getElementById('materiForm');
 
-    let mediaRecorder = null;
-    let audioChunks = [];
-    let isRecording = false;
-    let recordingDuration = 0;
-    let maxDuration = 15000; // max 15s recording
-
-    function resetRecording() {
-      audioChunks = [];
-      recordingDuration = 0;
-      updateProgress(0);
-      repeatBtn.disabled = true;
-      recordBtn.setAttribute('aria-pressed', 'false');
-      recordBtn.innerHTML = '<span class="material-icons" aria-hidden="true">mic</span> Mulai';
-    }
-
-    function updateProgress(percent) {
-      progressBar.style.width = percent + '%';
-    }
-
-    function startRecording() {
-      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        alert('Fitur rekam suara tidak didukung di browser ini.');
-        return;
-      }
-      navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-        mediaRecorder = new MediaRecorder(stream);
-        mediaRecorder.start();
-
-        isRecording = true;
-        audioChunks = [];
-        recordingDuration = 0;
-        updateProgress(0);
-        recordBtn.setAttribute('aria-pressed', 'true');
-        recordBtn.innerHTML = '<span class="material-icons" aria-hidden="true">stop</span> Stop';
-
-        mediaRecorder.addEventListener('dataavailable', event => {
-          audioChunks.push(event.data);
-        });
-
-        mediaRecorder.addEventListener('stop', () => {
-          isRecording = false;
-          repeatBtn.disabled = false;
-          recordBtn.setAttribute('aria-pressed', 'false');
-          recordBtn.innerHTML = '<span class="material-icons" aria-hidden="true">mic</span> Mulai';
-          stream.getTracks().forEach(t => t.stop());
-        });
-
-        const interval = setInterval(() => {
-          recordingDuration += 100;
-          let percent = Math.min((recordingDuration / maxDuration) * 100, 100);
-          updateProgress(percent);
-          if (recordingDuration >= maxDuration) {
-            mediaRecorder.stop();
-            clearInterval(interval);
-          }
-          if (!isRecording) {
-            clearInterval(interval);
-          }
-        }, 100);
-
-      }).catch(err => {
-        alert('Gagal mengakses mikrofon: ' + err.message);
-      });
-    }
-
-    recordBtn.addEventListener('click', () => {
-      if (isRecording) {
-        mediaRecorder.stop();
-      } else {
-        startRecording();
-      }
-    });
-
-    repeatBtn.addEventListener('click', () => {
-      resetRecording();
-    });
-
-    form.addEventListener('reset', () => {
-      resetRecording();
-      updateProgress(0);
-    });
-
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      // Basic validation
-      if (!form.mapel.value.trim() || !form.judul.value.trim()) {
-        alert('Mohon isi Mapel dan Judul Materi.');
-        return;
-      }
-
-      // Choose audio source: If recorded audio exists, prefer that over upload
-      let audioFile = null;
-      if (audioChunks.length > 0) {
-        audioFile = new Blob(audioChunks, { type: 'audio/webm' });
-      } else if (form.uploadSuara.files.length) {
-        audioFile = form.uploadSuara.files[0];
-      }
-
-      if (!audioFile) {
-        alert('Harap rekam suara atau upload file suara sebelum mengirim.');
-        return;
-      }
-
-      // Show collected info for demo (replace with real send logic)
-      const reader = new FileReader();
-      reader.onload = () => {
-        alert(
-          'Data Terkirim:\n' +
-          'Mapel: ' + form.mapel.value.trim() + '\n' +
-          'Judul Materi: ' + form.judul.value.trim() + '\n' +
-          'Audio size: ' + audioFile.size + ' bytes\n\n' +
-          'File Base64 preview (first 50 chars):\n' + reader.result.substring(0, 50)
-        );
-        form.reset();
-      };
-      reader.readAsDataURL(audioFile);
-    });
-
-    // Initialize form state
-    resetRecording();
-  })();
-</script>
-<footer style="flex-shrink: 0; text-align:center; padding: 20px 16px; font-size: 0.9rem; background: #3f51b5; color: white;">
-  &copy; 2024 Buat Materi. Semua hak cipta dilindungi.
+<footer>
+  <small>&copy; 2024 Edit Soal Application</small>
 </footer>
+
+<script>
+  // Mobile menu toggle logic
+  const menuButton = document.querySelector('.mobile-menu-button');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const overlay = document.querySelector('.overlay');
+
+  function toggleMenu() {
+    const expanded = menuButton.getAttribute('aria-expanded') === 'true';
+    menuButton.setAttribute('aria-expanded', String(!expanded));
+    mobileMenu.classList.toggle('show');
+    overlay.classList.toggle('show');
+  }
+
+  menuButton.addEventListener('click', toggleMenu);
+  overlay.addEventListener('click', toggleMenu);
+
+  // Voice recognition functionality
+  const voiceButton = document.getElementById('voice-button');
+  const voiceIcon = document.querySelector('.voice-icon');
+  const questionText = document.getElementById('question-text');
+
+  let recognition;
+  let isRecognizing = false;
+
+  if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SpeechRecognition();
+    recognition.lang = 'id-ID';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    function startRecognition() {
+      if (isRecognizing) {
+        recognition.stop();
+        return;
+      }
+      recognition.start();
+      isRecognizing = true;
+      voiceButton.textContent = 'berhenti';
+      voiceButton.setAttribute('aria-pressed', 'true');
+      voiceIcon.style.color = '#1a237e';
+    }
+
+    recognition.onresult = event => {
+      const speechResult = event.results[0][0].transcript;
+      questionText.value += (questionText.value ? ' ' : '') + speechResult;
+    };
+
+    recognition.onend = () => {
+      isRecognizing = false;
+      voiceButton.textContent = 'gunakan suara';
+      voiceButton.setAttribute('aria-pressed', 'false');
+      voiceIcon.style.color = '#3f51b5';
+    };
+
+    recognition.onerror = event => {
+      console.error('Speech recognition error:', event.error);
+      isRecognizing = false;
+      voiceButton.textContent = 'gunakan suara';
+      voiceButton.setAttribute('aria-pressed', 'false');
+      voiceIcon.style.color = '#3f51b5';
+      alert('Terjadi kesalahan pada pengenalan suara: ' + event.error);
+    };
+
+    voiceButton.addEventListener('click', startRecognition);
+    voiceIcon.addEventListener('click', startRecognition);
+    voiceIcon.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        startRecognition();
+      }
+    });
+  } else {
+    voiceButton.disabled = true;
+    voiceButton.textContent = 'Pengenalan suara tidak didukung';
+    voiceIcon.style.color = '#ccc';
+    voiceIcon.style.cursor = 'default';
+  }
+
+  // Form submission handling (for demo only)
+  const form = document.getElementById('editSoalForm');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    // Basic validation can be added here if needed
+    alert('Soal berhasil disimpan!');
+    form.reset();
+  });
+</script>
+
 </body>
 </html>
+
+
 
 
 
