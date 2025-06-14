@@ -1,312 +1,372 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Edit Pengumuman</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-  <style>
-    /* CSS Reset & base */
-    *, *::before, *::after {
-      box-sizing: border-box;
-    }
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: #f9fafb;
-      color: #1f2937;
-      line-height: 1.6;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
-      padding: 16px;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Buat Materi</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<style>
+  /* Reset and base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: #f9fafb;
+    color: #212121;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Container & layout */
+  main {
+    flex: 1 0 auto;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px 16px 64px;
+  }
+
+  /* Header */
+  header {
+    background: #3f51b5;
+    color: white;
+    padding: 16px 24px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
+  }
+
+  /* Form styles */
+  form {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 8px 20px rgb(0 0 0 / 0.07);
+  }
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 1rem;
+  }
+  input[type="text"],
+  input[type="file"],
+  textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.8px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    font-family: inherit;
+  }
+  input[type="text"]:focus,
+  input[type="file"]:focus,
+  textarea:focus {
+    outline: none;
+    border-color: #3f51b5;
+    box-shadow: 0 0 6px #3f51b5aa;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  /* Rekam Suara container */
+  .record-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 8px;
+  }
+  button.record-btn {
+    background-color: #e91e63;
+    border: none;
+    color: white;
+    padding: 10px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    gap: 6px;
+    transition: background-color 0.3s ease;
+  }
+  button.record-btn:hover {
+    background-color: #c2185b;
+  }
+  button.record-btn:disabled {
+    background-color: #bbb;
+    cursor: not-allowed;
+  }
+  .record-progress {
+    flex: 1 1 auto;
+    height: 8px;
+    background: #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+  .record-progress > div {
+    height: 100%;
+    background: #3f51b5;
+    width: 0%;
+    transition: width 0.2s ease;
+  }
+  .record-repeat {
+    background: #ff9800;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease;
+  }
+  .record-repeat:hover {
+    background-color: #fb8c00;
+  }
+
+  /* Upload suara */
+  .upload-suara {
+    margin-top: 24px;
+    font-weight: 600;
+  }
+  input[type="file"] {
+    cursor: pointer;
+  }
+
+  /* Buttons container */
+  .form-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 32px;
+  }
+  button[type="reset"],
+  button[type="submit"] {
+    padding: 12px 32px;
+    font-weight: 700;
+    font-size: 1rem;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    min-width: 100px;
+  }
+  button[type="reset"] {
+    background: #b0bec5;
+    color: #212121;
+    transition: background-color 0.3s ease;
+  }
+  button[type="reset"]:hover {
+    background: #90a4ae;
+  }
+  button[type="submit"] {
+    background: #3f51b5;
+    color: white;
+    transition: background-color 0.3s ease;
+  }
+  button[type="submit"]:hover {
+    background: #303f9f;
+  }
+
+  /* Responsive adjustments */
+
+  @media (max-width: 767px) {
     main {
-      background: white;
-      border-radius: 12px;
-      max-width: 480px;
-      width: 100%;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-      padding: 24px 32px;
-      display: flex;
+      padding: 16px 12px 48px;
+    }
+    .form-buttons {
       flex-direction: column;
-      gap: 24px;
-    }
-    h1 {
-      font-weight: 700;
-      font-size: 1.5rem;
-      margin: 0;
-      border-bottom: 1px solid #e5e7eb;
-      padding-bottom: 12px;
-    }
-
-    /* Form label */
-    label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 8px;
-      font-size: 1rem;
-    }
-
-    /* Audio container */
-    .audio-input-container {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      border: 1.5px solid #d1d5db;
-      border-radius: 12px;
-      padding: 12px 16px;
-      background: #fafafa;
-    }
-    .material-icons {
-      color: #4b5563;
-      font-size: 28px;
-      user-select: none;
-    }
-    audio {
-      flex-grow: 1;
-      outline: none;
-    }
-
-    /* Delete button */
-    .btn-delete-sound {
-      background: #ef4444;
-      border: none;
-      color: white;
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-weight: 600;
-      cursor: pointer;
-      font-size: 0.9rem;
-      transition: background-color 0.3s ease;
-      max-width: 140px;
-      align-self: start;
-    }
-    .btn-delete-sound:hover,
-    .btn-delete-sound:focus {
-      background: #b91c1c;
-      outline: none;
-    }
-
-    /* Form group for Duration and Date */
-    .form-row {
-      display: flex;
-      gap: 24px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .form-field {
-      flex: 1;
-      min-width: 140px;
-    }
-    .checkbox-field {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      user-select: none;
-    }
-    input[type="checkbox"] {
-      width: 20px;
-      height: 20px;
-      cursor: pointer;
-    }
-
-    input[type="number"],
-    input[type="date"] {
-      width: 100%;
-      padding: 10px 14px;
-      border-radius: 10px;
-      border: 1.5px solid #d1d5db;
-      font-size: 1rem;
-      font-weight: 400;
-      transition: border-color 0.3s ease;
-    }
-    input[type="number"]:focus,
-    input[type="date"]:focus {
-      border-color: #2563eb;
-      outline: none;
-      background: #f0f9ff;
-    }
-
-    /* Buttons container */
-    .buttons-row {
-      display: flex;
-      justify-content: space-between;
       gap: 16px;
-      flex-wrap: wrap;
     }
-
-    button {
-      flex: 1 1 45%;
-      padding: 12px 0;
-      font-weight: 700;
-      font-size: 1rem;
-      border-radius: 10px;
-      cursor: pointer;
-      border: none;
-      transition: background-color 0.3s ease, color 0.3s ease;
-      user-select: none;
-      min-width: 120px;
+    button[type="reset"],
+    button[type="submit"] {
+      min-width: auto;
+      width: 100%;
     }
-
-    .btn-cancel {
-      background: #d1d5db;
-      color: #374151;
-    }
-    .btn-cancel:hover,
-    .btn-cancel:focus {
-      background: #9ca3af;
-      outline: none;
-    }
-    .btn-update {
-      background: #2563eb;
-      color: white;
-    }
-    .btn-update:hover,
-    .btn-update:focus {
-      background: #1e40af;
-      outline: none;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 480px) {
-      main {
-        padding: 20px 20px;
-      }
-      .form-row {
-        flex-direction: column;
-        gap: 16px;
-      }
-      .buttons-row {
-        flex-direction: column;
-      }
-      button {
-        flex: 1 1 100%;
-        min-width: auto;
-      }
-      .btn-delete-sound {
-        max-width: none;
-        width: 100%;
-        text-align: center;
-      }
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
-  <main role="main" aria-labelledby="pageTitle">
-    <h1 id="pageTitle">Edit Pengumuman</h1>
+<header>
+  Buat Materi
+</header>
+<main>
+  <form id="materiForm" novalidate>
+    <label for="mapel">Mapel</label>
+    <input type="text" id="mapel" name="mapel" placeholder="Nama mapel..." required autocomplete="off" aria-describedby="mapel-desc" />
+    <label for="judul">Judul Materi</label>
+    <input type="text" id="judul" name="judul" placeholder="Judul materi..." required autocomplete="off" aria-describedby="judul-desc" />
 
-    <form id="editForm" aria-describedby="formDesc">
-      <p id="formDesc" style="margin-bottom:16px; font-weight:600;">Isi Pengumuman (Suara)</p>
-      
-      <div class="audio-input-container">
-        <span class="material-icons" aria-hidden="true" title="Audio mikrofon">mic</span>
-        <audio id="audioPlayer" controls aria-label="Player audio pengumuman suara">
-          <source src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/147fff89-0bea-458a-bafb-c43432010514.png" type="audio/mpeg" />
-          Browser anda tidak mendukung audio.
-        </audio>
+    <label>Rekam Suara</label>
+    <div class="record-container" aria-live="polite" aria-atomic="true">
+      <button type="button" class="record-btn" id="recordBtn" aria-pressed="false" aria-label="Mulai rekam suara">
+        <span class="material-icons" aria-hidden="true">mic</span> Mulai
+      </button>
+      <div class="record-progress" aria-label="Progress rekaman">
+        <div id="progressBar"></div>
       </div>
+      <button type="button" class="record-repeat" id="repeatBtn" disabled>Ulang</button>
+    </div>
 
-      <button type="button" class="btn-delete-sound" id="deleteSoundBtn" aria-label="Hapus suara pengumuman">Hapus suara</button>
+    <label for="uploadSuara" class="upload-suara">Upload Suara</label>
+    <input type="file" id="uploadSuara" name="uploadSuara" accept="audio/*" aria-describedby="upload-desc" />
 
-      <div class="form-row">
-        <div class="form-field">
-          <label for="durationDays" class="checkbox-field">
-            <input type="checkbox" id="durationCheckbox" />
-            Durasi: <input type="number" id="durationDays" name="durationDays" min="1" max="365" placeholder="Hari" disabled aria-disabled="true" aria-label="Durasi dalam hari" />
-          </label>
-        </div>
+    <div class="form-buttons">
+      <button type="reset" id="btnCancel">Batal</button>
+      <button type="submit" id="btnSubmit">Kirim</button>
+    </div>
+  </form>
+</main>
+<script>
+  (function() {
+    const recordBtn = document.getElementById('recordBtn');
+    const repeatBtn = document.getElementById('repeatBtn');
+    const progressBar = document.getElementById('progressBar');
+    const form = document.getElementById('materiForm');
 
-        <div class="form-field">
-          <label for="dateInput">Tanggal:</label>
-          <input type="date" id="dateInput" name="dateInput" aria-required="true" required />
-        </div>
-      </div>
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let isRecording = false;
+    let recordingDuration = 0;
+    let maxDuration = 15000; // max 15s recording
 
-      <div class="buttons-row">
-        <button type="button" class="btn-cancel" id="cancelBtn">Batal</button>
-        <button type="submit" class="btn-update">Update</button>
-      </div>
-    </form>
-  </main>
+    function resetRecording() {
+      audioChunks = [];
+      recordingDuration = 0;
+      updateProgress(0);
+      repeatBtn.disabled = true;
+      recordBtn.setAttribute('aria-pressed', 'false');
+      recordBtn.innerHTML = '<span class="material-icons" aria-hidden="true">mic</span> Mulai';
+    }
 
-  <script>
-    const durationCheckbox = document.getElementById('durationCheckbox');
-    const durationDays = document.getElementById('durationDays');
-    const deleteSoundBtn = document.getElementById('deleteSoundBtn');
-    const audioPlayer = document.getElementById('audioPlayer');
-    const cancelBtn = document.getElementById('cancelBtn');
-    const editForm = document.getElementById('editForm');
+    function updateProgress(percent) {
+      progressBar.style.width = percent + '%';
+    }
 
-    // Enable or disable duration input based on checkbox
-    durationCheckbox.addEventListener('change', () => {
-      if(durationCheckbox.checked) {
-        durationDays.disabled = false;
-        durationDays.setAttribute('aria-disabled', 'false');
-        durationDays.focus();
-      } else {
-        durationDays.disabled = true;
-        durationDays.setAttribute('aria-disabled', 'true');
-        durationDays.value = '';
-      }
-    });
-
-    // Clear audio source when user clicks Hapus suara
-    deleteSoundBtn.addEventListener('click', () => {
-      audioPlayer.pause();
-      audioPlayer.currentTime = 0;
-      audioPlayer.src = "";
-      audioPlayer.load();
-      deleteSoundBtn.disabled = true;
-      deleteSoundBtn.style.opacity = 0.6;
-      deleteSoundBtn.textContent = "Suara dihapus";
-      deleteSoundBtn.setAttribute('aria-disabled', 'true');
-    });
-
-    // Cancel button reload page (or could close modal in real app)
-    cancelBtn.addEventListener('click', () => {
-      // For demo, resetting form
-      editForm.reset();
-      durationDays.disabled = true;
-      durationDays.setAttribute('aria-disabled', 'true');
-      audioPlayer.src = "https://placehold.co/audio/1sec.mp3";
-      audioPlayer.load();
-
-      // Reset delete button
-      deleteSoundBtn.disabled = false;
-      deleteSoundBtn.style.opacity = 1;
-      deleteSoundBtn.textContent = "Hapus suara";
-      deleteSoundBtn.setAttribute('aria-disabled', 'false');
-    });
-
-    // Handle form submit
-    editForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      // Form data can be processed here
-      const durationEnabled = durationCheckbox.checked;
-      const durationValue = durationEnabled ? durationDays.value : null;
-      const dateValue = document.getElementById('dateInput').value;
-      
-      if (dateValue === '') {
-        alert('Tanggal wajib diisi.');
+    function startRecording() {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        alert('Fitur rekam suara tidak didukung di browser ini.');
         return;
       }
-      // Simulate update
-      alert(
-        'Pengumuman diperbarui:\n' +
-        (durationEnabled ? ('Durasi: ' + durationValue + ' hari\n') : '') +
-        'Tanggal: ' + dateValue
-      );
+      navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.start();
+
+        isRecording = true;
+        audioChunks = [];
+        recordingDuration = 0;
+        updateProgress(0);
+        recordBtn.setAttribute('aria-pressed', 'true');
+        recordBtn.innerHTML = '<span class="material-icons" aria-hidden="true">stop</span> Stop';
+
+        mediaRecorder.addEventListener('dataavailable', event => {
+          audioChunks.push(event.data);
+        });
+
+        mediaRecorder.addEventListener('stop', () => {
+          isRecording = false;
+          repeatBtn.disabled = false;
+          recordBtn.setAttribute('aria-pressed', 'false');
+          recordBtn.innerHTML = '<span class="material-icons" aria-hidden="true">mic</span> Mulai';
+          stream.getTracks().forEach(t => t.stop());
+        });
+
+        const interval = setInterval(() => {
+          recordingDuration += 100;
+          let percent = Math.min((recordingDuration / maxDuration) * 100, 100);
+          updateProgress(percent);
+          if (recordingDuration >= maxDuration) {
+            mediaRecorder.stop();
+            clearInterval(interval);
+          }
+          if (!isRecording) {
+            clearInterval(interval);
+          }
+        }, 100);
+
+      }).catch(err => {
+        alert('Gagal mengakses mikrofon: ' + err.message);
+      });
+    }
+
+    recordBtn.addEventListener('click', () => {
+      if (isRecording) {
+        mediaRecorder.stop();
+      } else {
+        startRecording();
+      }
     });
-  </script>
+
+    repeatBtn.addEventListener('click', () => {
+      resetRecording();
+    });
+
+    form.addEventListener('reset', () => {
+      resetRecording();
+      updateProgress(0);
+    });
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      // Basic validation
+      if (!form.mapel.value.trim() || !form.judul.value.trim()) {
+        alert('Mohon isi Mapel dan Judul Materi.');
+        return;
+      }
+
+      // Choose audio source: If recorded audio exists, prefer that over upload
+      let audioFile = null;
+      if (audioChunks.length > 0) {
+        audioFile = new Blob(audioChunks, { type: 'audio/webm' });
+      } else if (form.uploadSuara.files.length) {
+        audioFile = form.uploadSuara.files[0];
+      }
+
+      if (!audioFile) {
+        alert('Harap rekam suara atau upload file suara sebelum mengirim.');
+        return;
+      }
+
+      // Show collected info for demo (replace with real send logic)
+      const reader = new FileReader();
+      reader.onload = () => {
+        alert(
+          'Data Terkirim:\n' +
+          'Mapel: ' + form.mapel.value.trim() + '\n' +
+          'Judul Materi: ' + form.judul.value.trim() + '\n' +
+          'Audio size: ' + audioFile.size + ' bytes\n\n' +
+          'File Base64 preview (first 50 chars):\n' + reader.result.substring(0, 50)
+        );
+        form.reset();
+      };
+      reader.readAsDataURL(audioFile);
+    });
+
+    // Initialize form state
+    resetRecording();
+  })();
+</script>
+<footer style="flex-shrink: 0; text-align:center; padding: 20px 16px; font-size: 0.9rem; background: #3f51b5; color: white;">
+  &copy; 2024 Buat Materi. Semua hak cipta dilindungi.
+</footer>
 </body>
 </html>
+
+
 
 
 
