@@ -2,273 +2,335 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Pengumuman Aktif</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Buat Pengumuman</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 <style>
+  /* Root colors */
+  :root {
+    --yellow-primary: #ffd600;
+    --yellow-dark: #cca700;
+    --white: #ffffff;
+    --gray-light: #f9f9f9;
+    --gray-medium: #666666;
+    --gray-dark: #333333;
+    --border-radius: 12px;
+    --spacing: 16px;
+  }
+
   /* Reset and base */
-  *, *::before, *::after {
+  * {
     box-sizing: border-box;
   }
+
   body {
     margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background: #fff;
-    color: #333;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--white);
+    color: var(--gray-dark);
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
   }
 
-  /* Colors */
-  :root {
-    --yellow: #FFD600;
-    --yellow-dark: #D4AF37;
-    --white: #FFFFFF;
-    --gray-light: #F8F8F8;
-    --gray-medium: #999999;
-    --gray-dark: #555555;
-  }
-
-  /* Container for the page content */
+  /* Container with breathing room */
   .container {
-    flex: 1 0 auto;
-    max-width: 960px;
-    margin: 32px auto 24px;
-    padding: 0 16px;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--spacing);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
   }
 
   /* Header */
   header {
-    text-align: center;
-    padding: 24px 16px 16px;
-    background: var(--yellow);
-    color: var(--white);
-    border-radius: 12px 12px 0 0;
-    box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
-    user-select: none;
-  }
-  header h1 {
-    font-weight: 700;
-    font-size: 1.8rem;
-    letter-spacing: 1.2px;
-    margin-bottom: 8px;
-  }
-  header h2 {
+    background: var(--yellow-primary);
+    padding: 1.25rem var(--spacing);
+    color: var(--gray-dark);
     font-weight: 600;
-    font-size: 1.2rem;
-    color: var(--white);
-    opacity: 0.9;
+    font-size: 1.5rem;
+    text-align: center;
+    box-shadow: 0 3px 8px rgb(255 214 0 / 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 100;
   }
 
-  /* Table container card */
-  .card {
-    background: var(--yellow);
-    border-radius: 12px;
-    box-shadow: 0 6px 20px rgb(212 175 55 / 0.3);
-    overflow-x: auto;
+  /* Announcement Textarea */
+  label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
   }
 
-  /* Table for announcements */
-  table {
+  textarea#announcement-text {
     width: 100%;
-    border-collapse: collapse;
-    background: var(--white);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-  thead {
-    background: var(--yellow);
-    color: var(--white);
-  }
-  thead th {
-    padding: 12px 16px;
-    text-align: left;
-    font-weight: 700;
+    min-height: 120px;
+    padding: 12px 48px 12px 16px;
     font-size: 1rem;
-    border-bottom: 2px solid var(--yellow-dark);
+    border: 2px solid var(--yellow-dark);
+    border-radius: var(--border-radius);
+    resize: vertical;
+    font-family: 'Inter', sans-serif;
+    color: var(--gray-dark);
+    background-color: var(--gray-light);
+    transition: border-color 0.3s ease;
+    position: relative;
   }
-  tbody tr:nth-child(even) {
-    background: var(--gray-light);
+
+  textarea#announcement-text:focus {
+    outline: none;
+    border-color: var(--yellow-primary);
+    background-color: var(--white);
   }
-  tbody td {
-    padding: 12px 16px;
-    font-size: 0.95rem;
-    vertical-align: middle;
-    border-bottom: 1px solid #ddd;
+
+  /* Sound icon button in textarea */
+  .textarea-wrapper {
+    position: relative;
+    width: 100%;
+  }
+  .sound-icon {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    cursor: pointer;
+    color: var(--yellow-dark);
+    font-size: 28px;
+    transition: color 0.3s ease;
+  }
+  .sound-icon:hover, .sound-icon:focus {
+    color: var(--yellow-primary);
+  }
+
+  /* Sound usage section */
+  .sound-section {
+    border: 2px solid var(--yellow-dark);
+    border-radius: var(--border-radius);
+    padding: var(--spacing);
+    background-color: var(--gray-light);
+  }
+  .sound-section > h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 12px 0;
+    color: var(--yellow-dark);
+  }
+  .sound-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    align-items: center;
+  }
+  /* Each input group */
+  .input-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .input-group label {
+    font-weight: 500;
+    min-width: 60px;
+  }
+  input[type="number"], input[type="date"] {
+    border: 2px solid var(--yellow-dark);
+    border-radius: var(--border-radius);
+    padding: 8px 12px;
+    font-size: 1rem;
+    outline-offset: 2px;
+    width: 120px;
+    background-color: var(--white);
+    color: var(--gray-dark);
+    transition: border-color 0.3s ease;
+  }
+  input[type="number"]:focus, input[type="date"]:focus {
+    border-color: var(--yellow-primary);
+  }
+
+  input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--yellow-primary);
+    cursor: pointer;
   }
 
   /* Action buttons */
-  .btn {
-    cursor: pointer;
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+  }
+  button {
+    font-family: 'Inter', sans-serif;
     font-weight: 600;
-    font-size: 0.85rem;
-    border: none;
-    border-radius: 8px;
-    padding: 6px 12px;
-    margin-right: 8px;
-    min-width: 60px;
-    transition: background-color 0.2s ease;
-    user-select: none;
-  }
-  .btn-edit {
-    background-color: var(--yellow);
-    color: #333;
-    border: 2px solid var(--yellow-dark);
-  }
-  .btn-edit:hover,
-  .btn-edit:focus {
-    background-color: var(--yellow-dark);
-    color: var(--white);
-    outline: none;
-  }
-  .btn-delete {
-    background-color: white;
-    color: var(--yellow-dark);
-    border: 2px solid var(--yellow-dark);
-  }
-  .btn-delete:hover,
-  .btn-delete:focus {
-    background-color: var(--yellow-dark);
-    color: var(--white);
-    outline: none;
-  }
-
-  /* Create button */
-  .btn-create {
-    margin: 16px 0 14px 16px;
-    background-color: var(--yellow);
-    color: var(--white);
-    border: 2px solid var(--yellow-dark);
-    font-weight: 700;
     font-size: 1rem;
-    padding: 10px 24px;
-    border-radius: 12px;
+    padding: 12px 32px;
+    rounded-corners: var(--border-radius);
+    border-radius: var(--border-radius);
     cursor: pointer;
-    user-select: none;
+    border: none;
     transition: background-color 0.3s ease;
+    min-width: 120px;
   }
-  .btn-create:hover,
-  .btn-create:focus {
+  button.cancel {
+    background-color: var(--white);
+    border: 2px solid var(--yellow-dark);
+    color: var(--yellow-dark);
+  }
+  button.cancel:hover, button.cancel:focus {
     background-color: var(--yellow-dark);
+    color: var(--white);
+    outline: none;
+  }
+  button.submit {
+    background-color: var(--yellow-primary);
+    color: var(--gray-dark);
+    box-shadow: 0 6px 12px rgb(255 214 0 / 0.5);
+  }
+  button.submit:hover, button.submit:focus {
+    background-color: var(--yellow-dark);
+    color: var(--white);
+    box-shadow: 0 8px 14px rgb(255 214 0 / 0.8);
     outline: none;
   }
 
-  /* Footer navbar */
+  /* Footer */
   footer {
-    flex-shrink: 0;
-    background: var(--yellow);
-    color: var(--white);
+    background-color: var(--yellow-primary);
+    color: var(--gray-dark);
     text-align: center;
-    padding: 14px 0;
-    font-weight: 600;
-    font-size: 1.1rem;
-    letter-spacing: 0.5px;
-    user-select: none;
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.15);
+    padding: 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    box-shadow: 0 -3px 8px rgb(255 214 0 / 0.3);
   }
 
-  /* Responsive */
-  @media (max-width: 640px) {
-    header h1 {
-      font-size: 1.4rem;
+  /* Responsive Design */
+  @media (max-width: 767px) {
+    .sound-options {
+      flex-direction: column;
+      gap: 16px;
     }
-    header h2 {
-      font-size: 1rem;
+    input[type="number"],
+    input[type="date"] {
+      width: 100%;
+      max-width: 300px;
     }
-    .btn-create {
-      width: calc(100% - 32px);
-      margin: 16px auto 14px;
-      display: block;
-      text-align: center;
-    }
-    tbody td {
-      font-size: 0.9rem;
-      padding: 10px 12px;
-    }
-    thead, tbody tr {
-      display: block;
-    }
-    thead tr {
-      display: none;
-    }
-    tbody tr {
-      margin-bottom: 16px;
-      border-radius: 12px;
-      box-shadow: 0 3px 10px rgb(212 175 55 / 0.25);
-      background: var(--white);
-      padding: 12px 16px;
-    }
-    tbody td {
-      display: flex;
-      justify-content: space-between;
-      padding: 8px 0;
-      border: none;
-      border-bottom: 1px solid #eee;
-    }
-    tbody td:last-child {
-      border-bottom: none;
-      justify-content: flex-end;
-      gap: 8px;
+    .actions {
+      flex-direction: column;
+      gap: 16px;
     }
   }
 </style>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 </head>
 <body>
-  <header>
-    <h1>Pengumuman</h1>
-    <h2>Pengumuman Aktif</h2>
-  </header>
+<header role="banner" aria-label="Header halaman buat pengumuman">Buat Pengumuman</header>
 
-  <main class="container" role="main" aria-label="Daftar pengumuman aktif">
-    <div class="card" role="region" aria-labelledby="tableTitle">
-      <table aria-describedby="tableDesc" tabindex="0">
-        <caption id="tableTitle" style="visibility:hidden; height:0; overflow:hidden;">Tabel pengumuman aktif</caption>
-        <thead>
-          <tr>
-            <th scope="col">Tanggal</th>
-            <th scope="col">Isi Singkat</th>
-            <th scope="col">Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td tabindex="0">16/06/25</td>
-            <td tabindex="0">Lorem ipsum dolor sit amet...</td>
-            <td>
-              <button class="btn btn-edit" aria-label="Edit pengumuman tanggal 16 Juni 2025">
-                <span class="material-icons" aria-hidden="true">edit</span> Edit
-              </button>
-              <button class="btn btn-delete" aria-label="Hapus pengumuman tanggal 16 Juni 2025">
-                <span class="material-icons" aria-hidden="true">delete</span> Hapus
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td tabindex="0">23/06/25</td>
-            <td tabindex="0">1 menit</td>
-            <td>
-              <button class="btn btn-edit" aria-label="Edit pengumuman tanggal 23 Juni 2025">
-                <span class="material-icons" aria-hidden="true">edit</span> Edit
-              </button>
-              <button class="btn btn-delete" aria-label="Hapus pengumuman tanggal 23 Juni 2025">
-                <span class="material-icons" aria-hidden="true">delete</span> Hapus
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+<main class="container" role="main">
+  <form id="announcementForm" aria-describedby="formDescription">
+    <label for="announcement-text">Isi Pengumuman (text)</label>
+    <div class="textarea-wrapper">
+      <textarea id="announcement-text" name="announcementText" aria-label="Kolom isi pengumuman" placeholder="Tulis pengumuman Anda di sini..." required></textarea>
+      <span tabindex="0" role="button" class="material-icons sound-icon" aria-label="Gunakan suara untuk input">volume_up</span>
     </div>
 
-    <button class="btn-create" aria-label="Buat pengumuman baru">
-      <span class="material-icons" aria-hidden="true" style="vertical-align: middle;">add</span> Buat
-    </button>
-  </main>
+    <section class="sound-section" aria-labelledby="soundUsageTitle">
+      <h2 id="soundUsageTitle">Gunakan Suara</h2>
 
-  <footer role="contentinfo" aria-label="Navigasi bawah">
-    Navbar
-  </footer>
+      <div class="sound-options">
+
+        <div class="input-group">
+          <label for="durationDays">Durasi:</label>
+          <input type="checkbox" id="useDuration" name="useDuration" aria-describedby="durationDesc" />
+          <span id="durationDesc">hari</span>
+          <input
+            type="number"
+            id="durationDays"
+            name="durationDays"
+            aria-label="Masukkan durasi pengumuman dalam hari"
+            min="1"
+            max="365"
+            step="1"
+            disabled
+            placeholder="0"
+          />
+        </div>
+
+        <div class="input-group">
+          <label for="announcementDate">Tanggal:</label>
+          <input type="date" id="announcementDate" name="announcementDate" aria-label="Pilih tanggal pengumuman" required />
+        </div>
+      </div>
+    </section>
+
+    <div class="actions">
+      <button type="reset" class="cancel" aria-label="Batalkan pengumuman">Batal</button>
+      <button type="submit" class="submit" aria-label="Siarkan pengumuman">Siarkan</button>
+    </div>
+  </form>
+</main>
+
+<footer role="contentinfo">
+  &copy; 2024 Buat Pengumuman. All rights reserved.
+</footer>
+
+<script>
+  // Enable or disable duration input based on checkbox
+  const useDurationCheckbox = document.getElementById('useDuration');
+  const durationDaysInput = document.getElementById('durationDays');
+  useDurationCheckbox.addEventListener('change', () => {
+    durationDaysInput.disabled = !useDurationCheckbox.checked;
+    if (!useDurationCheckbox.checked) {
+      durationDaysInput.value = '';
+    }
+  });
+
+  // Dummy click handler for sound icon
+  const soundIcon = document.querySelector('.sound-icon');
+  soundIcon.addEventListener('click', () => {
+    alert('Fitur suara belum tersedia.');
+  });
+  soundIcon.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      soundIcon.click();
+    }
+  });
+
+  // Form submission handler
+  const form = document.getElementById('announcementForm');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const announcementText = form.announcementText.value.trim();
+    const useDuration = useDurationCheckbox.checked;
+    const duration = durationDaysInput.value;
+    const date = form.announcementDate.value;
+
+    if (announcementText.length === 0) {
+      alert('Isi pengumuman harus diisi.');
+      return;
+    }
+    if (!date) {
+      alert('Tanggal harus dipilih.');
+      return;
+    }
+    if (useDuration && (!duration || duration <= 0)) {
+      alert('Durasi harus lebih besar dari 0 jika dipilih.');
+      return;
+    }
+
+    alert('Pengumuman berhasil disiarkan:\n\n' +
+      `Isi: ${announcementText}\n` +
+      `Gunakan Suara: ${useDuration ? 'Ya' : 'Tidak'}\n` +
+      (useDuration ? `Durasi: ${duration} hari\n` : '') +
+      `Tanggal: ${date}`);
+
+    form.reset();
+    durationDaysInput.disabled = true;
+  });
+</script>
 </body>
 </html>
 
