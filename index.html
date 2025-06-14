@@ -1,336 +1,312 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Buat Pengumuman</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-<style>
-  /* Root colors */
-  :root {
-    --yellow-primary: #ffd600;
-    --yellow-dark: #cca700;
-    --white: #ffffff;
-    --gray-light: #f9f9f9;
-    --gray-medium: #666666;
-    --gray-dark: #333333;
-    --border-radius: 12px;
-    --spacing: 16px;
-  }
-
-  /* Reset and base */
-  * {
-    box-sizing: border-box;
-  }
-
-  body {
-    margin: 0;
-    font-family: 'Inter', sans-serif;
-    background-color: var(--white);
-    color: var(--gray-dark);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* Container with breathing room */
-  .container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: var(--spacing);
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  /* Header */
-  header {
-    background: var(--yellow-primary);
-    padding: 1.25rem var(--spacing);
-    color: var(--gray-dark);
-    font-weight: 600;
-    font-size: 1.5rem;
-    text-align: center;
-    box-shadow: 0 3px 8px rgb(255 214 0 / 0.3);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-
-  /* Announcement Textarea */
-  label {
-    font-weight: 600;
-    margin-bottom: 8px;
-    display: block;
-  }
-
-  textarea#announcement-text {
-    width: 100%;
-    min-height: 120px;
-    padding: 12px 48px 12px 16px;
-    font-size: 1rem;
-    border: 2px solid var(--yellow-dark);
-    border-radius: var(--border-radius);
-    resize: vertical;
-    font-family: 'Inter', sans-serif;
-    color: var(--gray-dark);
-    background-color: var(--gray-light);
-    transition: border-color 0.3s ease;
-    position: relative;
-  }
-
-  textarea#announcement-text:focus {
-    outline: none;
-    border-color: var(--yellow-primary);
-    background-color: var(--white);
-  }
-
-  /* Sound icon button in textarea */
-  .textarea-wrapper {
-    position: relative;
-    width: 100%;
-  }
-  .sound-icon {
-    position: absolute;
-    right: 12px;
-    bottom: 12px;
-    cursor: pointer;
-    color: var(--yellow-dark);
-    font-size: 28px;
-    transition: color 0.3s ease;
-  }
-  .sound-icon:hover, .sound-icon:focus {
-    color: var(--yellow-primary);
-  }
-
-  /* Sound usage section */
-  .sound-section {
-    border: 2px solid var(--yellow-dark);
-    border-radius: var(--border-radius);
-    padding: var(--spacing);
-    background-color: var(--gray-light);
-  }
-  .sound-section > h2 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin: 0 0 12px 0;
-    color: var(--yellow-dark);
-  }
-  .sound-options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
-    align-items: center;
-  }
-  /* Each input group */
-  .input-group {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .input-group label {
-    font-weight: 500;
-    min-width: 60px;
-  }
-  input[type="number"], input[type="date"] {
-    border: 2px solid var(--yellow-dark);
-    border-radius: var(--border-radius);
-    padding: 8px 12px;
-    font-size: 1rem;
-    outline-offset: 2px;
-    width: 120px;
-    background-color: var(--white);
-    color: var(--gray-dark);
-    transition: border-color 0.3s ease;
-  }
-  input[type="number"]:focus, input[type="date"]:focus {
-    border-color: var(--yellow-primary);
-  }
-
-  input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    accent-color: var(--yellow-primary);
-    cursor: pointer;
-  }
-
-  /* Action buttons */
-  .actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 24px;
-  }
-  button {
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    font-size: 1rem;
-    padding: 12px 32px;
-    rounded-corners: var(--border-radius);
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    border: none;
-    transition: background-color 0.3s ease;
-    min-width: 120px;
-  }
-  button.cancel {
-    background-color: var(--white);
-    border: 2px solid var(--yellow-dark);
-    color: var(--yellow-dark);
-  }
-  button.cancel:hover, button.cancel:focus {
-    background-color: var(--yellow-dark);
-    color: var(--white);
-    outline: none;
-  }
-  button.submit {
-    background-color: var(--yellow-primary);
-    color: var(--gray-dark);
-    box-shadow: 0 6px 12px rgb(255 214 0 / 0.5);
-  }
-  button.submit:hover, button.submit:focus {
-    background-color: var(--yellow-dark);
-    color: var(--white);
-    box-shadow: 0 8px 14px rgb(255 214 0 / 0.8);
-    outline: none;
-  }
-
-  /* Footer */
-  footer {
-    background-color: var(--yellow-primary);
-    color: var(--gray-dark);
-    text-align: center;
-    padding: 12px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    box-shadow: 0 -3px 8px rgb(255 214 0 / 0.3);
-  }
-
-  /* Responsive Design */
-  @media (max-width: 767px) {
-    .sound-options {
-      flex-direction: column;
-      gap: 16px;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Edit Pengumuman</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <style>
+    /* CSS Reset & base */
+    *, *::before, *::after {
+      box-sizing: border-box;
     }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #f9fafb;
+      color: #1f2937;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 16px;
+    }
+    main {
+      background: white;
+      border-radius: 12px;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      padding: 24px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    h1 {
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin: 0;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 12px;
+    }
+
+    /* Form label */
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    /* Audio container */
+    .audio-input-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1.5px solid #d1d5db;
+      border-radius: 12px;
+      padding: 12px 16px;
+      background: #fafafa;
+    }
+    .material-icons {
+      color: #4b5563;
+      font-size: 28px;
+      user-select: none;
+    }
+    audio {
+      flex-grow: 1;
+      outline: none;
+    }
+
+    /* Delete button */
+    .btn-delete-sound {
+      background: #ef4444;
+      border: none;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background-color 0.3s ease;
+      max-width: 140px;
+      align-self: start;
+    }
+    .btn-delete-sound:hover,
+    .btn-delete-sound:focus {
+      background: #b91c1c;
+      outline: none;
+    }
+
+    /* Form group for Duration and Date */
+    .form-row {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .form-field {
+      flex: 1;
+      min-width: 140px;
+    }
+    .checkbox-field {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      user-select: none;
+    }
+    input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+
     input[type="number"],
     input[type="date"] {
       width: 100%;
-      max-width: 300px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1.5px solid #d1d5db;
+      font-size: 1rem;
+      font-weight: 400;
+      transition: border-color 0.3s ease;
     }
-    .actions {
-      flex-direction: column;
+    input[type="number"]:focus,
+    input[type="date"]:focus {
+      border-color: #2563eb;
+      outline: none;
+      background: #f0f9ff;
+    }
+
+    /* Buttons container */
+    .buttons-row {
+      display: flex;
+      justify-content: space-between;
       gap: 16px;
+      flex-wrap: wrap;
     }
-  }
-</style>
+
+    button {
+      flex: 1 1 45%;
+      padding: 12px 0;
+      font-weight: 700;
+      font-size: 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      user-select: none;
+      min-width: 120px;
+    }
+
+    .btn-cancel {
+      background: #d1d5db;
+      color: #374151;
+    }
+    .btn-cancel:hover,
+    .btn-cancel:focus {
+      background: #9ca3af;
+      outline: none;
+    }
+    .btn-update {
+      background: #2563eb;
+      color: white;
+    }
+    .btn-update:hover,
+    .btn-update:focus {
+      background: #1e40af;
+      outline: none;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      main {
+        padding: 20px 20px;
+      }
+      .form-row {
+        flex-direction: column;
+        gap: 16px;
+      }
+      .buttons-row {
+        flex-direction: column;
+      }
+      button {
+        flex: 1 1 100%;
+        min-width: auto;
+      }
+      .btn-delete-sound {
+        max-width: none;
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
 </head>
 <body>
-<header role="banner" aria-label="Header halaman buat pengumuman">Buat Pengumuman</header>
+  <main role="main" aria-labelledby="pageTitle">
+    <h1 id="pageTitle">Edit Pengumuman</h1>
 
-<main class="container" role="main">
-  <form id="announcementForm" aria-describedby="formDescription">
-    <label for="announcement-text">Isi Pengumuman (text)</label>
-    <div class="textarea-wrapper">
-      <textarea id="announcement-text" name="announcementText" aria-label="Kolom isi pengumuman" placeholder="Tulis pengumuman Anda di sini..." required></textarea>
-      <span tabindex="0" role="button" class="material-icons sound-icon" aria-label="Gunakan suara untuk input">volume_up</span>
-    </div>
+    <form id="editForm" aria-describedby="formDesc">
+      <p id="formDesc" style="margin-bottom:16px; font-weight:600;">Isi Pengumuman (Suara)</p>
+      
+      <div class="audio-input-container">
+        <span class="material-icons" aria-hidden="true" title="Audio mikrofon">mic</span>
+        <audio id="audioPlayer" controls aria-label="Player audio pengumuman suara">
+          <source src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/147fff89-0bea-458a-bafb-c43432010514.png" type="audio/mpeg" />
+          Browser anda tidak mendukung audio.
+        </audio>
+      </div>
 
-    <section class="sound-section" aria-labelledby="soundUsageTitle">
-      <h2 id="soundUsageTitle">Gunakan Suara</h2>
+      <button type="button" class="btn-delete-sound" id="deleteSoundBtn" aria-label="Hapus suara pengumuman">Hapus suara</button>
 
-      <div class="sound-options">
-
-        <div class="input-group">
-          <label for="durationDays">Durasi:</label>
-          <input type="checkbox" id="useDuration" name="useDuration" aria-describedby="durationDesc" />
-          <span id="durationDesc">hari</span>
-          <input
-            type="number"
-            id="durationDays"
-            name="durationDays"
-            aria-label="Masukkan durasi pengumuman dalam hari"
-            min="1"
-            max="365"
-            step="1"
-            disabled
-            placeholder="0"
-          />
+      <div class="form-row">
+        <div class="form-field">
+          <label for="durationDays" class="checkbox-field">
+            <input type="checkbox" id="durationCheckbox" />
+            Durasi: <input type="number" id="durationDays" name="durationDays" min="1" max="365" placeholder="Hari" disabled aria-disabled="true" aria-label="Durasi dalam hari" />
+          </label>
         </div>
 
-        <div class="input-group">
-          <label for="announcementDate">Tanggal:</label>
-          <input type="date" id="announcementDate" name="announcementDate" aria-label="Pilih tanggal pengumuman" required />
+        <div class="form-field">
+          <label for="dateInput">Tanggal:</label>
+          <input type="date" id="dateInput" name="dateInput" aria-required="true" required />
         </div>
       </div>
-    </section>
 
-    <div class="actions">
-      <button type="reset" class="cancel" aria-label="Batalkan pengumuman">Batal</button>
-      <button type="submit" class="submit" aria-label="Siarkan pengumuman">Siarkan</button>
-    </div>
-  </form>
-</main>
+      <div class="buttons-row">
+        <button type="button" class="btn-cancel" id="cancelBtn">Batal</button>
+        <button type="submit" class="btn-update">Update</button>
+      </div>
+    </form>
+  </main>
 
-<footer role="contentinfo">
-  &copy; 2024 Buat Pengumuman. All rights reserved.
-</footer>
+  <script>
+    const durationCheckbox = document.getElementById('durationCheckbox');
+    const durationDays = document.getElementById('durationDays');
+    const deleteSoundBtn = document.getElementById('deleteSoundBtn');
+    const audioPlayer = document.getElementById('audioPlayer');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const editForm = document.getElementById('editForm');
 
-<script>
-  // Enable or disable duration input based on checkbox
-  const useDurationCheckbox = document.getElementById('useDuration');
-  const durationDaysInput = document.getElementById('durationDays');
-  useDurationCheckbox.addEventListener('change', () => {
-    durationDaysInput.disabled = !useDurationCheckbox.checked;
-    if (!useDurationCheckbox.checked) {
-      durationDaysInput.value = '';
-    }
-  });
+    // Enable or disable duration input based on checkbox
+    durationCheckbox.addEventListener('change', () => {
+      if(durationCheckbox.checked) {
+        durationDays.disabled = false;
+        durationDays.setAttribute('aria-disabled', 'false');
+        durationDays.focus();
+      } else {
+        durationDays.disabled = true;
+        durationDays.setAttribute('aria-disabled', 'true');
+        durationDays.value = '';
+      }
+    });
 
-  // Dummy click handler for sound icon
-  const soundIcon = document.querySelector('.sound-icon');
-  soundIcon.addEventListener('click', () => {
-    alert('Fitur suara belum tersedia.');
-  });
-  soundIcon.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
+    // Clear audio source when user clicks Hapus suara
+    deleteSoundBtn.addEventListener('click', () => {
+      audioPlayer.pause();
+      audioPlayer.currentTime = 0;
+      audioPlayer.src = "";
+      audioPlayer.load();
+      deleteSoundBtn.disabled = true;
+      deleteSoundBtn.style.opacity = 0.6;
+      deleteSoundBtn.textContent = "Suara dihapus";
+      deleteSoundBtn.setAttribute('aria-disabled', 'true');
+    });
+
+    // Cancel button reload page (or could close modal in real app)
+    cancelBtn.addEventListener('click', () => {
+      // For demo, resetting form
+      editForm.reset();
+      durationDays.disabled = true;
+      durationDays.setAttribute('aria-disabled', 'true');
+      audioPlayer.src = "https://placehold.co/audio/1sec.mp3";
+      audioPlayer.load();
+
+      // Reset delete button
+      deleteSoundBtn.disabled = false;
+      deleteSoundBtn.style.opacity = 1;
+      deleteSoundBtn.textContent = "Hapus suara";
+      deleteSoundBtn.setAttribute('aria-disabled', 'false');
+    });
+
+    // Handle form submit
+    editForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      soundIcon.click();
-    }
-  });
-
-  // Form submission handler
-  const form = document.getElementById('announcementForm');
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const announcementText = form.announcementText.value.trim();
-    const useDuration = useDurationCheckbox.checked;
-    const duration = durationDaysInput.value;
-    const date = form.announcementDate.value;
-
-    if (announcementText.length === 0) {
-      alert('Isi pengumuman harus diisi.');
-      return;
-    }
-    if (!date) {
-      alert('Tanggal harus dipilih.');
-      return;
-    }
-    if (useDuration && (!duration || duration <= 0)) {
-      alert('Durasi harus lebih besar dari 0 jika dipilih.');
-      return;
-    }
-
-    alert('Pengumuman berhasil disiarkan:\n\n' +
-      `Isi: ${announcementText}\n` +
-      `Gunakan Suara: ${useDuration ? 'Ya' : 'Tidak'}\n` +
-      (useDuration ? `Durasi: ${duration} hari\n` : '') +
-      `Tanggal: ${date}`);
-
-    form.reset();
-    durationDaysInput.disabled = true;
-  });
-</script>
+      // Form data can be processed here
+      const durationEnabled = durationCheckbox.checked;
+      const durationValue = durationEnabled ? durationDays.value : null;
+      const dateValue = document.getElementById('dateInput').value;
+      
+      if (dateValue === '') {
+        alert('Tanggal wajib diisi.');
+        return;
+      }
+      // Simulate update
+      alert(
+        'Pengumuman diperbarui:\n' +
+        (durationEnabled ? ('Durasi: ' + durationValue + ' hari\n') : '') +
+        'Tanggal: ' + dateValue
+      );
+    });
+  </script>
 </body>
 </html>
+
+
 
