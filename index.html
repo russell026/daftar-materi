@@ -1,159 +1,274 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Daftar Quiz - Selamat Datang</title>
-  <style>
-    /* Reset & base */
-    *, *::before, *::after {
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pengumuman Aktif</title>
+<style>
+  /* Reset and base */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #fff;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #ffffff;
-      color: #333;
-      line-height: 1.6;
-      min-height: 100vh;
-    }
+  /* Colors */
+  :root {
+    --yellow: #FFD600;
+    --yellow-dark: #D4AF37;
+    --white: #FFFFFF;
+    --gray-light: #F8F8F8;
+    --gray-medium: #999999;
+    --gray-dark: #555555;
+  }
 
-    /* Container */
-    .container {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 32px 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
-    }
+  /* Container for the page content */
+  .container {
+    flex: 1 0 auto;
+    max-width: 960px;
+    margin: 32px auto 24px;
+    padding: 0 16px;
+  }
 
+  /* Header */
+  header {
+    text-align: center;
+    padding: 24px 16px 16px;
+    background: var(--yellow);
+    color: var(--white);
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
+    user-select: none;
+  }
+  header h1 {
+    font-weight: 700;
+    font-size: 1.8rem;
+    letter-spacing: 1.2px;
+    margin-bottom: 8px;
+  }
+  header h2 {
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--white);
+    opacity: 0.9;
+  }
+
+  /* Table container card */
+  .card {
+    background: var(--yellow);
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgb(212 175 55 / 0.3);
+    overflow-x: auto;
+  }
+
+  /* Table for announcements */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  thead {
+    background: var(--yellow);
+    color: var(--white);
+  }
+  thead th {
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 1rem;
+    border-bottom: 2px solid var(--yellow-dark);
+  }
+  tbody tr:nth-child(even) {
+    background: var(--gray-light);
+  }
+  tbody td {
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #ddd;
+  }
+
+  /* Action buttons */
+  .btn {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    margin-right: 8px;
+    min-width: 60px;
+    transition: background-color 0.2s ease;
+    user-select: none;
+  }
+  .btn-edit {
+    background-color: var(--yellow);
+    color: #333;
+    border: 2px solid var(--yellow-dark);
+  }
+  .btn-edit:hover,
+  .btn-edit:focus {
+    background-color: var(--yellow-dark);
+    color: var(--white);
+    outline: none;
+  }
+  .btn-delete {
+    background-color: white;
+    color: var(--yellow-dark);
+    border: 2px solid var(--yellow-dark);
+  }
+  .btn-delete:hover,
+  .btn-delete:focus {
+    background-color: var(--yellow-dark);
+    color: var(--white);
+    outline: none;
+  }
+
+  /* Create button */
+  .btn-create {
+    margin: 16px 0 14px 16px;
+    background-color: var(--yellow);
+    color: var(--white);
+    border: 2px solid var(--yellow-dark);
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 10px 24px;
+    border-radius: 12px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease;
+  }
+  .btn-create:hover,
+  .btn-create:focus {
+    background-color: var(--yellow-dark);
+    outline: none;
+  }
+
+  /* Footer navbar */
+  footer {
+    flex-shrink: 0;
+    background: var(--yellow);
+    color: var(--white);
+    text-align: center;
+    padding: 14px 0;
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    user-select: none;
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.15);
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
     header h1 {
-      font-size: 2.5rem; /* ~40px */
-      color: #f59e0b; /* yellow-500 */
+      font-size: 1.4rem;
+    }
+    header h2 {
+      font-size: 1rem;
+    }
+    .btn-create {
+      width: calc(100% - 32px);
+      margin: 16px auto 14px;
+      display: block;
       text-align: center;
     }
-
-    section {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+    tbody td {
+      font-size: 0.9rem;
+      padding: 10px 12px;
     }
-
-    section > h2 {
-      font-size: 1.75rem; /* ~28px */
-      color: #333;
-      text-align: center;
-      border-bottom: 2px solid #f59e0b; /* yellow-500 */
-      padding-bottom: 8px;
+    thead, tbody tr {
+      display: block;
     }
-
-    /* Table */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 16px;
+    thead tr {
+      display: none;
     }
-
-    th, td {
-      padding: 12px;
-      text-align: left;
-      border: 1px solid #e5e7eb; /* gray-300 */
+    tbody tr {
+      margin-bottom: 16px;
+      border-radius: 12px;
+      box-shadow: 0 3px 10px rgb(212 175 55 / 0.25);
+      background: var(--white);
+      padding: 12px 16px;
     }
-
-    th {
-      background-color: #f59e0b; /* yellow-500 */
-      color: white;
-    }
-
-    tr:nth-child(even) {
-      background-color: #f9fafb; /* light gray */
-    }
-
-    /* Buttons */
-    .button-container {
+    tbody td {
       display: flex;
       justify-content: space-between;
-      margin-top: 24px;
-    }
-
-    .btn {
-      background-color: #f59e0b; /* yellow-500 */
-      color: white;
-      font-weight: bold;
-      padding: 12px 20px;
+      padding: 8px 0;
       border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      flex: 1;
-      margin: 0 8px; /* spacing between buttons */
-      text-align: center;
+      border-bottom: 1px solid #eee;
     }
-
-    .btn:hover {
-      background-color: #d97706; /* darker yellow */
+    tbody td:last-child {
+      border-bottom: none;
+      justify-content: flex-end;
+      gap: 8px;
     }
-
-    /* Responsive */
-    @media (max-width: 480px) {
-      header h1 {
-        font-size: 2rem; /* ~32px */
-      }
-
-      section > h2 {
-        font-size: 1.5rem; /* ~24px */
-      }
-
-      th, td {
-        padding: 8px; /* smaller padding on mobile */
-      }
-
-      .btn {
-        padding: 10px 16px; /* smaller button padding on mobile */
-      }
-    }
-  </style>
+  }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 </head>
 <body>
-  <div class="container" role="main">
-    <header>
-      <h1>Selamat datang, nci Virgin 👋</h1>
-    </header>
+  <header>
+    <h1>Pengumuman</h1>
+    <h2>Pengumuman Aktif</h2>
+  </header>
 
-    <section aria-labelledby="quiz-title">
-      <h2 id="quiz-title">Daftar Quiz</h2>
-      <table>
+  <main class="container" role="main" aria-label="Daftar pengumuman aktif">
+    <div class="card" role="region" aria-labelledby="tableTitle">
+      <table aria-describedby="tableDesc" tabindex="0">
+        <caption id="tableTitle" style="visibility:hidden; height:0; overflow:hidden;">Tabel pengumuman aktif</caption>
         <thead>
           <tr>
-            <th>Nomor Soal</th>
-            <th>Soal Quiz</th>
+            <th scope="col">Tanggal</th>
+            <th scope="col">Isi Singkat</th>
+            <th scope="col">Aksi</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>1</td>
-            <td>Apa itu bahasa Indonesia?</td>
+            <td tabindex="0">16/06/25</td>
+            <td tabindex="0">Lorem ipsum dolor sit amet...</td>
+            <td>
+              <button class="btn btn-edit" aria-label="Edit pengumuman tanggal 16 Juni 2025">
+                <span class="material-icons" aria-hidden="true">edit</span> Edit
+              </button>
+              <button class="btn btn-delete" aria-label="Hapus pengumuman tanggal 16 Juni 2025">
+                <span class="material-icons" aria-hidden="true">delete</span> Hapus
+              </button>
+            </td>
           </tr>
           <tr>
-            <td>2</td>
-            <td>Berapa hasil 5 + 7?</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Apa nama ibu kota Indonesia?</td>
+            <td tabindex="0">23/06/25</td>
+            <td tabindex="0">1 menit</td>
+            <td>
+              <button class="btn btn-edit" aria-label="Edit pengumuman tanggal 23 Juni 2025">
+                <span class="material-icons" aria-hidden="true">edit</span> Edit
+              </button>
+              <button class="btn btn-delete" aria-label="Hapus pengumuman tanggal 23 Juni 2025">
+                <span class="material-icons" aria-hidden="true">delete</span> Hapus
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
-    </section>
-
-    <div class="button-container">
-      <button class="btn" aria-label="Buat Quiz">Buat Quiz</button>
-      <button class="btn" aria-label="Lihat Hasil Quiz">Lihat Hasil Quiz</button>
     </div>
-  </div>
+
+    <button class="btn-create" aria-label="Buat pengumuman baru">
+      <span class="material-icons" aria-hidden="true" style="vertical-align: middle;">add</span> Buat
+    </button>
+  </main>
+
+  <footer role="contentinfo" aria-label="Navigasi bawah">
+    Navbar
+  </footer>
 </body>
 </html>
-
 
